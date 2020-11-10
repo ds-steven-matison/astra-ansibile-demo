@@ -1,0 +1,26 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    astra_api_url: "https://api.astra.datastax.com/v2/databases/[cluster_id]/keyspaces/newKeyspace"
+    astra_auth_token: "[token from devops_auth_post]"
+
+  tasks:
+    - name: add keyspace
+      uri:
+        url: "{{ astra_api_url }}"
+        method: POST
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ astra_auth_token }}"
+        status_code: 201
+      register: response_keyspace
+
+    - name: debug
+      debug:
+        var: response_keyspace

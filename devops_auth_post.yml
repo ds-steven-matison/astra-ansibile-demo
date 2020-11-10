@@ -1,0 +1,29 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    astra_api_url: "https://api.astra.datastax.com/v2/authenticateServiceAccount"
+    astra_auth_request_body:
+      clientName: "[asta_service_account_clientName]"
+      clientId: "[astra_service_account_clientId]"
+      clientSecret: "[astra_service_account_clientSecret]"
+
+  tasks:
+    - name: create auth
+      uri:
+        url: "{{ astra_api_url }}"
+        method: POST
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+        body: "{{ astra_auth_request_body | to_json }}"
+        status_code: 200
+      register: request_auth
+
+    - name: debug
+      debug:
+        var: request_auth

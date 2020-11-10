@@ -1,0 +1,39 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
+    astra_auth_token: "[token from data_auth_post]"
+    astra_create_table: 
+      name: "database_name"
+      columnDefinitions:
+        - 
+          name: "id"
+          typeDefinition: "text"
+        - 
+          name: "value"
+          typeDefinition: "text"
+      primaryKey: 
+        partitionKey:
+          - id  
+          
+  tasks:
+    - name: create table
+      uri:
+        url: "{{ astra_rest_api_url }}/v1/keyspaces/ncl/tables"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          X-Cassandra-Token: "{{ astra_auth_token }}"
+        body: "{{ astra_create_table | to_json }}"
+        status_code: 201
+      register: response_table
+
+    - name: debug
+      debug:
+        var: response_table

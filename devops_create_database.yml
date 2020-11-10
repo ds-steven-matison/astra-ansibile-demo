@@ -1,0 +1,36 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    astra_api_url: "https://api.astra.datastax.com/v2/databases"
+    astra_auth_token: "[token from devops_auth_post]"
+    astra_create_table:
+      name: "table_name"
+      keyspace: "keyspace_name"
+      cloudProvider: "gcp"
+      tier: "developer"
+      capacityUnits: 1
+      region: "us-east1"
+      user: "username"
+      password: "password"
+
+  tasks:
+    - name: create database
+      uri:
+        url: "{{ astra_api_url }}"
+        method: POST
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ astra_auth_token }}"
+        body: "{{ astra_create_table | to_json }}"
+        status_code: 201
+      register: response_database
+
+    - name: debug
+      debug:
+        var: response_database

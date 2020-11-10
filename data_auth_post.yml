@@ -1,0 +1,27 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
+    astra_auth_request_body:
+      username: "username"
+      password: "password"
+
+  tasks:
+    - name: create auth
+      uri:
+        url: "{{ astra_rest_api_url }}/v1/auth"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: "{{ astra_auth_request_body | to_json }}"
+        status_code: 201
+      register: request_auth
+
+    - name: debug
+      debug:
+        var: request_auth

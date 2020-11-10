@@ -1,0 +1,28 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    astra_auth_user: "ncl"
+    astra_auth_password: "ncl2020"
+    astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
+    astra_auth_token: "[token from data_auth_post]"
+
+  tasks:
+    - name: get tables
+      uri:
+        url: "{{ astra_rest_api_url }}/v1/keyspaces/ncl/tables"
+        method: GET
+        headers:
+          Accept: "application/json"
+          X-Cassandra-Token: "{{ astra_auth_token }}"
+        status_code: 200
+      register: response_tables
+
+
+    - name: debug
+      debug:
+        var: response_tables
