@@ -6,15 +6,14 @@
 
   vars:
 
-    astra_auth_user: "ncl"
-    astra_auth_password: "ncl2020"
     astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
     astra_auth_token: "[token from data_auth_post]"
-
+    astra_keyspace: "[keyspace to add table too]"
+    
   tasks:
     - name: get tables
       uri:
-        url: "{{ astra_rest_api_url }}/v1/keyspaces/ncl/tables"
+        url: "{{ astra_rest_api_url }}/v1/keyspaces//{{ astra_keyspace }}/tables"
         method: GET
         headers:
           Accept: "application/json"

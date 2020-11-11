@@ -22,8 +22,8 @@
           Content-Type: "application/json"
         body: "{{ astra_auth_request_body | to_json }}"
         status_code: 200
-      register: request_auth
+      register: response_auth
 
     - name: debug
       debug:
-        var: request_auth
+        var: response_auth
