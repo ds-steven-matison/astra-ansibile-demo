@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    astra_api_url: "https://api.astra.datastax.com/v2/databases"
+    astra_auth_token: "[token from devops_auth_post]"
+    astra_database_id: "[astra database id]"
+    astra_resize_database:
+      capacityUnits: 3
+  tasks:
+    - name: resize database
+      uri:
+        url: "{{ astra_api_url }}/{{ astra_database_id }}/resize"
+        method: POST
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ astra_auth_token }}"
+        body: "{{ astra_resize_database | to_json }}"
+        status_code: 202
+      register: response_resize
+    - name: debug
+      debug:
+        var: response_resize
