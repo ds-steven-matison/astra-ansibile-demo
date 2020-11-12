@@ -6,7 +6,13 @@ A sample repository demonstrating how to use Astra Data & DevOps APIs in ansible
 - devops_get_databases
 - devops_add_keyspace
 - devops_create_database
-- add rest
+- devops_reset_password
+- devops_resize_database
+- devops_park_database
+- devops_unpark_database
+- devops_terminate_database
+- devops_get_bundle
+- devops_get_regions
 
 # Astra Data API
 - data_auth_post

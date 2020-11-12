@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    astra_api_url: "https://api.astra.datastax.com/v2/availableRegions"
+    astra_auth_token: "[token from devops_auth_post]"
+  tasks:
+    - name: return regions
+      uri:
+        url: "{{ astra_api_url }}"
+        method: GET
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ astra_auth_token }}"
+        body: ""
+        status_code: 200
+      register: response_regions
+    - name: debug
+      debug:
+        var: response_regions
