@@ -1,15 +1,11 @@
 ---
-
 - hosts: localhost
   connection: local
   gather_facts: no
-
   vars:
-
     astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
     astra_auth_token: "[token from data_auth_post]"
     astra_keyspace: "[keyspace to add table too]"
-    
   tasks:
     - name: get tables
       uri:
@@ -20,8 +16,6 @@
           X-Cassandra-Token: "{{ astra_auth_token }}"
         status_code: 200
       register: response_tables
-
-
     - name: debug
       debug:
         var: response_tables

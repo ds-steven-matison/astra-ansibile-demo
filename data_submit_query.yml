@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
+    astra_auth_token: "[token from data_auth_post]"
+    astra_keyspace: "[keyspace for table]"
+    astra_table: "[table]"
+    astra_query:
+      columnNames:
+        - "id"
+        - "value"
+      filters:
+        -
+          value:
+            - "1"
+          columnName: "id"
+          operator: "eq"
+  tasks:
+    - name: submit query
+      uri:
+        url: "{{ astra_rest_api_url }}/v1/keyspaces/{{ astra_keyspace }}/tables/{{ astra_table }}/rows/query"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          X-Cassandra-Token: "{{ astra_auth_token }}"
+        body: "{{ astra_query | to_json }}"
+        status_code: 200
+      register: response_query
+    - name: debug
+      debug:
+        var: response_query

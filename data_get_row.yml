@@ -5,16 +5,19 @@
   vars:
     astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
     astra_auth_token: "[token from data_auth_post]"
+    astra_keyspace: "[keyspace for table]"
+    astra_table: "[table]"
+    astra_row: "[primary Key for row]"
   tasks:
-    - name: get keyspaces
+    - name: get row
       uri:
-        url: "{{ astra_rest_api_url }}/v1/keyspaces"
+        url: "{{ astra_rest_api_url }}/v1/keyspaces/{{ astra_keyspace }}/tables/{{ astra_table }}/rows/{{ astra_row }}"
         method: GET
         headers:
           Accept: "application/json"
           X-Cassandra-Token: "{{ astra_auth_token }}"
         status_code: 200
-      register: response_keyspaces
+      register: response_row
     - name: debug
       debug:
-        var: response_keyspaces
+        var: response_row
