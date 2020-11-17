@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
+    astra_auth_token: "[token from data_auth_post]"
+    astra_keyspace: "[keyspace for table]"
+    astra_table: "[table]"
+    astra_row: 1
+    astra_update_row:
+      changeset:
+        - column: "value"
+          value: "some updated text"
+  tasks:
+    - name: update rows
+      uri:
+        url: "{{ astra_rest_api_url }}/v1/keyspaces/{{ astra_keyspace }}/tables/{{ astra_table }}/rows/{{ astra_row }}"
+        method: PUT
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          X-Cassandra-Token: "{{ astra_auth_token }}"
+        body: "{{ astra_update_row | to_json }}"
+        status_code: 200
+      register: response_update
+    - name: debug
+      debug:
+        var: response_update

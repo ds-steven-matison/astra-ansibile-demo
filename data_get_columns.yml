@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    astra_rest_api_url: "https://[cluster_id]-[cluster_region].apps.astra.datastax.com/api/rest"
+    astra_auth_token: "[token from data_auth_post]"
+    astra_keyspace: "[keyspace for table]"
+    astra_table: "[table]"
+  tasks:
+    - name: get columns
+      uri:
+        url: "{{ astra_rest_api_url }}/v1/keyspaces/{{ astra_keyspace }}/tables/{{ astra_table }}/columns"
+        method: GET
+        headers:
+          Accept: "application/json"
+          X-Cassandra-Token: "{{ astra_auth_token }}"
+        status_code: 200
+      register: response_columns
+    - name: debug
+      debug:
+        var: response_columns

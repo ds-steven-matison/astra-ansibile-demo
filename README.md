@@ -17,9 +17,21 @@ A sample repository demonstrating how to use Astra Data & DevOps APIs in ansible
 # Astra Data API
 - data_auth_post
 - data_get_keyspaces
-- data_get_tables
 - data_create_table
-- add rest
+- data_get_tables
+- data_get_table
+- data_delete_table
+- data_add_rows
+- data_submit_queries
+- data_get_rows
+- data_get_row
+- data_update_rows
+- data_delete_rows
+- data_get_columns
+- data_get_column
+- data_add_column
+- data_update_column
+- data_delete_colun
 
 # Astra Documentation
 - https://docs.astra.datastax.com/docs
