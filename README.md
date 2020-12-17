@@ -1,6 +1,8 @@
 # Astra Ansible API Demos
 A sample repository demonstrating how to use Astra Data & DevOps APIs in ansible playbooks.
 
+ Check out my [Astra + Ansible](https://ds-steven-matison.github.io/astra/ansible/) blog.
+
 # Astra Devops API
 - devops_auth_post
 - devops_get_databases
